@@ -7,6 +7,9 @@ extern Drive chassis;
 
 void default_constants();
 
+void left_auton();
+void right_auton();
+
 void drive_test();
 void turn_test();
 void swing_test();
