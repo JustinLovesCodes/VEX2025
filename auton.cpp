@@ -10,15 +10,15 @@
 
 void default_constants(){
   // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
-  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
+  chassis.set_drive_constants(10, 2, 0, 10, 0);
   chassis.set_heading_constants(6, .4, 0, 1, 0);
   chassis.set_turn_constants(12, .4, .03, 3, 15);
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
   // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-  chassis.set_drive_exit_conditions(1.5, 300, 5000);
-  chassis.set_turn_exit_conditions(1, 300, 3000);
-  chassis.set_swing_exit_conditions(1, 300, 3000);
+  chassis.set_drive_exit_conditions(1.5, 300, 4000);
+  chassis.set_turn_exit_conditions(2, 300, 2000);
+  chassis.set_swing_exit_conditions(2, 300, 2000);
 }
 
 /**
@@ -36,15 +36,94 @@ void odom_constants(){
   chassis.drive_min_voltage = 0;
 }
 
+
+void left_auton(){
+     IN.spin(fwd, 12, volt);
+  OUT.spin(reverse, 12, volt);
+  chassis.drive_max_voltage = 6;
+  chassis.drive_distance(6.3,-22);
+  SCRAPER.set(true);
+  chassis.drive_max_voltage = 8;
+  wait(100,msec);
+  chassis.left_swing_to_angle(-110);
+  wait(100,msec);
+  chassis.drive_distance(10.5);
+  wait(100,msec);
+  chassis.turn_to_angle(-180);
+  wait(100,msec);
+  SCRAPER.set(true);
+  chassis.set_drive_constants(8, 3, 0, 10, 0);
+  wait(100,msec);
+  chassis.set_drive_exit_conditions(1.5, 300, 1000);
+  chassis.drive_distance(20,-180);
+  wait(.5,sec);
+  chassis.drive_distance(-10,-180);
+  OUT.spin(fwd, 100, pct);
+  wait(3,sec);
+  // chassis.drive_distance(6,-180);
+  // chassis.drive_distance(-5,140);
+
+
+}
+
+
+void right_auton(){
+  IN.spin(fwd, 12, volt);
+  OUT.spin(reverse, 12, volt);
+  chassis.drive_max_voltage = 6;
+  chassis.drive_distance(6.3,22);
+  SCRAPER.set(true);
+  chassis.drive_max_voltage = 8;
+  wait(100,msec);
+  chassis.right_swing_to_angle(110);
+  wait(100,msec);
+  chassis.drive_distance(10.5);
+  wait(100,msec);
+  chassis.turn_to_angle(180);
+  wait(100,msec);
+  SCRAPER.set(true);
+  chassis.set_drive_constants(8, 3, 0, 10, 0);
+  wait(100,msec);
+  chassis.set_drive_exit_conditions(1.5, 300, 1000);
+  chassis.drive_distance(20,180);
+  wait(.5,sec);
+  chassis.drive_distance(-10,180);
+  OUT.spin(fwd, 100, pct);
+  wait(3,sec);
+  // chassis.drive_distance(6,180);
+  // chassis.drive_distance(-5,140);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * The expected behavior is to return to the start position.
  */
 
 void drive_test(){
-  chassis.drive_distance(6);
-  chassis.drive_distance(12);
-  chassis.drive_distance(18);
-  chassis.drive_distance(-36);
+  SCRAPER.set(true);
 }
 
 /**
