@@ -45,7 +45,7 @@ motor_group(RF, RM, RB),
 PORT19,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
-2.75,
+2.5,
 
 //External ratio, must be in decimal, in the format of input teeth/output teeth.
 //If your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
@@ -79,7 +79,7 @@ PORT3,     -PORT4,
 PORT7,
 
 //Input the Forward Tracker diameter (reverse it to make the direction switch):
-2.125,
+1.5,
 
 //Input Forward Tracker center distance (a positive distance corresponds to a tracker on the right side of the robot, negative is left.)
 //For a zero tracker tank drive with odom, put the positive distance from the center of the robot to the right side of the drive.
@@ -97,7 +97,7 @@ PORT7,
 
 );
 
-int current_auton_selection = 0;
+int current_auton_selection = 1;
 bool auto_started = false;
 
 /**
@@ -165,15 +165,19 @@ void pre_auton() {
 
 void autonomous(void) {
   auto_started = true;
+ current_auton_selection = 0;
+
   switch(current_auton_selection){ 
     case 0:
-      drive_test();
+      // drive_test();
+      left_auton();
       break;
     case 1:         
-      drive_test();
+      right_auton();
+      // drive_test();
       break;
     case 2:
-      turn_test();
+      drive_test();
       break;
     case 3:
       swing_test();
@@ -207,8 +211,6 @@ void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
 
-    //Replace this line with chassis.control_tank(); for tank drive 
-    //or chassis.control_holonomic(); for holo drive.
     if(controller(primary).ButtonR1.pressing()){
       IN.spin(fwd, 100, pct);
       OUT.spin(reverse, 10, pct);
@@ -224,8 +226,6 @@ void usercontrol(void) {
 
     controller(primary).ButtonL2.pressed([]{WING.set(!WING.value());});
     controller(primary).ButtonA.pressed([]{SCRAPER.set(!SCRAPER.value());});
-
-
     chassis.control_arcade();
 
     wait(20, msec); // Sleep the task for a short amount of time to
